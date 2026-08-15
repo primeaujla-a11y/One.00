@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONE.00</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- START SCREEN -->
+        <div id="screen-menu" class="screen active">
+            <div class="menu-container">
+                <div class="title-block">
+                    <img src="logo.png" alt="ONE.00" class="logo-img">
+                    <h1 class="game-title">ONE<span class="title-dot">.</span>00</h1>
+                    <p class="game-subtitle">Judge the moment.</p>
+                </div>
+
+                <div class="menu-explanation">
+                    <p>An event will happen at a random moment.</p>
+                    <p>You decide: did it happen <strong>less</strong> or <strong>more</strong> than 1 second ago?</p>
+                    <p class="menu-tagline">No countdown. No warning. Trust your internal clock.</p>
+                </div>
+
+                <div class="difficulty-selector">
+                    <label class="diff-label">Difficulty</label>
+                    <div class="diff-options">
+                        <button class="diff-btn" data-diff="easy">Easy</button>
+                        <button class="diff-btn selected" data-diff="normal">Normal</button>
+                        <button class="diff-btn" data-diff="hard">Hard</button>
+                        <button class="diff-btn" data-diff="insane">Insane</button>
+                    </div>
+                </div>
+
+                <button id="btn-start" class="btn-primary">START GAME</button>
+
+                <div class="menu-stats">
+                    <div class="stat-item">
+                        <span class="stat-val" id="menu-best-score">0</span>
+                        <span class="stat-lbl">Best Score</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val" id="menu-best-streak">0</span>
+                        <span class="stat-lbl">Best Streak</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val" id="menu-games-played">0</span>
+                        <span class="stat-lbl">Games Played</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val" id="menu-accuracy">--%</span>
+                        <span class="stat-lbl">Accuracy</span>
+                    </div>
+                </div>
+
+                <div class="keyboard-hints">
+                    <span><kbd>A</kbd> / <kbd>&larr;</kbd> Less</span>
+                    <span><kbd>D</kbd> / <kbd>&rarr;</kbd> More</span>
+                    <span><kbd>Space</kbd> Next</span>
+                    <span class="controller-hint">Controller: D-pad / Stick + A</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME SCREEN -->
+        <div id="screen-game" class="screen">
+            <div class="game-hud">
+                <div class="hud-left">
+                    <img src="logo.png" alt="" class="hud-logo">
+                    <span class="hud-title">ONE<span class="title-dot">.</span>00</span>
+                </div>
+                <div class="hud-center">
+                    <span class="hud-diff" id="hud-difficulty">NORMAL</span>
+                </div>
+                <div class="hud-right">
+                    <div class="hud-stat">
+                        <span class="hud-stat-val" id="hud-score">0</span>
+                        <span class="hud-stat-lbl">Score</span>
+                    </div>
+                    <div class="hud-stat">
+                        <span class="hud-stat-val" id="hud-streak">0</span>
+                        <span class="hud-stat-lbl">Streak</span>
+                    </div>
+                    <div class="hud-stat">
+                        <span class="hud-stat-val" id="hud-accuracy">--%</span>
+                        <span class="hud-stat-lbl">Accuracy</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-center">
+                <div class="bot-area" id="bot-area">
+                    <div class="bot-ring" id="bot-ring"></div>
+                    <div class="bot-core" id="bot-core">
+                        <img src="logo.png" alt="" class="bot-logo">
+                        <span class="bot-label" id="bot-label"></span>
+                    </div>
+                </div>
+                <p class="game-status-text" id="game-status">Press SPACE or wait...</p>
+            </div>
+
+            <div class="game-answers" id="game-answers">
+                <button class="btn-answer btn-less" id="btn-less">
+                    <span class="btn-answer-main">LESS THAN 1 SECOND</span>
+                    <span class="btn-answer-key">A / &larr;</span>
+                </button>
+                <button class="btn-answer btn-more" id="btn-more">
+                    <span class="btn-answer-main">MORE THAN 1 SECOND</span>
+                    <span class="btn-answer-key">D / &rarr;</span>
+                </button>
+            </div>
+
+            <!-- RESULT OVERLAY -->
+            <div class="result-overlay" id="result-overlay">
+                <div class="result-card" id="result-card">
+                    <div class="result-verdict" id="result-verdict">CORRECT</div>
+                    <div class="result-time" id="result-time">1.23s</div>
+                    <div class="result-choice" id="result-choice">MORE THAN 1 SECOND</div>
+                    <div class="result-details">
+                        <div class="result-row">
+                            <span>Your choice</span>
+                            <span id="result-your-choice">More</span>
+                        </div>
+                        <div class="result-row">
+                            <span>Correct choice</span>
+                            <span id="result-correct-choice">More</span>
+                        </div>
+                        <div class="result-row">
+                            <span>Score</span>
+                            <span id="result-score-change">+100</span>
+                        </div>
+                        <div class="result-row">
+                            <span>Streak</span>
+                            <span id="result-streak">3</span>
+                        </div>
+                    </div>
+                    <button class="btn-primary btn-next" id="btn-next">NEXT ROUND</button>
+                    <span class="result-hint">Press SPACE</span>
+                </div>
+            </div>
+
+            <!-- GAME OVER OVERLAY -->
+            <div class="gameover-overlay" id="gameover-overlay">
+                <div class="gameover-card">
+                    <h2 class="gameover-title">GAME OVER</h2>
+                    <div class="gameover-score" id="gameover-score">0</div>
+                    <div class="gameover-subtitle">Final Score</div>
+                    <div class="gameover-stats">
+                        <div class="go-stat">
+                            <span class="go-stat-val" id="go-accuracy">0%</span>
+                            <span class="go-stat-lbl">Accuracy</span>
+                        </div>
+                        <div class="go-stat">
+                            <span class="go-stat-val" id="go-rounds">0</span>
+                            <span class="go-stat-lbl">Rounds</span>
+                        </div>
+                        <div class="go-stat">
+                            <span class="go-stat-val" id="go-correct">0</span>
+                            <span class="go-stat-lbl">Correct</span>
+                        </div>
+                        <div class="go-stat">
+                            <span class="go-stat-val" id="go-wrong">0</span>
+                            <span class="go-stat-lbl">Wrong</span>
+                        </div>
+                        <div class="go-stat">
+                            <span class="go-stat-val" id="go-best-streak">0</span>
+                            <span class="go-stat-lbl">Best Streak</span>
+                        </div>
+                        <div class="go-stat">
+                            <span class="go-stat-val" id="go-best-score">0</span>
+                            <span class="go-stat-lbl">Best Score</span>
+                        </div>
+                    </div>
+                    <div class="gameover-actions">
+                        <button class="btn-primary" id="btn-play-again">PLAY AGAIN</button>
+                        <button class="btn-secondary" id="btn-change-diff">CHANGE DIFFICULTY</button>
+                        <button class="btn-secondary" id="btn-main-menu">MAIN MENU</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GREEN FLASH OVERLAY -->
+        <div class="flash-overlay" id="flash-overlay"></div>
+
+        <!-- SOUND TOGGLE -->
+        <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
+            <svg id="sound-on-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+            <svg id="sound-off-icon" class="hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+        </button>
+
+        <!-- PAUSE / END RUN -->
+        <button class="end-run-btn hidden" id="btn-end-run" title="End Run">END RUN</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
